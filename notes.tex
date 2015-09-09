@@ -500,7 +500,31 @@ The event $\{X+Y=n\}$ can be decomposed into disjoint events: \[\{X+Y=n\}=\bigca
 $\mbox{}$\\
 \underline{\textbf{Remark}} If $X$ and $Y$ are independent and integer valued with pmf's $\{a_n\}_{n=-\infty}^\infty$, $\{b_n\}_{n=-\infty}^\infty$, rep. then \[P(X+Y=n) = \sum_{i=-\infty}^\infty a_i b_{n-i} \quad \mbox{(which exists since each sequence is summable)}\] (A probabilistic distribution is \underline{absolutely continuous} if it has a nonnegative density $f(x)$ such that $\int_{-\infty}^\infty f(x) dx = 1$. [There are continuous distributions w/o densities.]) Or if $X$ and $Y$ are independent with absolutely continuous distributions having densities $f_X(x)$ and $f_Y(y)$, rep., then $X+Y$ has density \[f_X * f_Y(Z) = \int_{-\infty}^\infty f_X(x)f_Y(z-x)dx\]. (Note: convolution formulas are context dependent, so beware!) \\
 \underline{example} $\quad$ Suppose $X \sim Poisson(\lambda), Y \sim Poisson(\mu)$. So \[a_n = P(X=n) = \frac{\lambda^n e^{-\lambda}}{n!}, n \geq 0, b_n = P(Y = n) = \frac{\mu_n e^{-\lambda}}{n!}, n \geq 0\] Then, \[P(X+Y=n) = \sum_{i=0}^n a_i b_{n-i} = \cdots = \frac{(\lambda + \mu)^n e^{-(\mu + \lambda)}}{n!}, n \geq 0, \mbox{(check),} \quad \mbox{and $X+Y \sim Poisson(\lambda + \mu).$}\]
-Note: If $X_1, \cdots, X_n$ are iid with pmf $\{p_k\}$ we will denote the pmf of $S_n = X_1 + \cdots + X_n$ by \[\{P_k^{*n}\} = \{p_k\}*\cdots * \{p_k\} \quad \mbox{(n-fold convolution)}\].
+Note: If $X_1, \cdots, X_n$ are iid with pmf $\{p_k\}$ we will denote the pmf of $S_n = X_1 + \cdots + X_n$ by \[\{P_k^{*n}\} = \{p_k\}*\cdots * \{p_k\} \quad \mbox{(n-fold convolution)}\]. 
+Computing convolutions can be tedious, difficult or even impossible. Alternatively, one may use a \underline{transform}. (there several different kinds of transforms.)
+
+\begin{mydef}
+\begin{enumerate}[(a)]
+\item The \underline{generating function} (gf) for a sequence $\{a_n\}_{n \geq 0} a_n S^n$ is \[A(S) = \sum_{n=0}^\infty a_n S^n,\] (defined for all $S$ such that $\sum_{n=0}^\infty |a_n|S^n < \infty$.)
+\item The probability generating function (pgf) for a pmf $\{p_n\}_{n \geq 0}$ is its gf: \[P(S) = \sum_{n=0}^\infty p_n S^n\]
+\end{enumerate}
+\end{mydef}
+$\mbox{}$\\
+\underline{\textbf{Remark}} $\quad$ If $X$ is a nonnegative  integer valued r.v. with pmf $\{P_n\}$. Then $P(s) = E(s^x), |s| \leq 1$. ($s \geq 0$ suffices here)\\
+It often is more \underline{convenient} \& \underline{illuminating} to use this expectation notation.\\ 
+examples \begin{itemize}
+\item $X \sim Poisson(\lambda)$ \[E(s^x) = P(s) = \sum_{k=0}^\infty \frac{\lambda^k e^{-\lambda}s^k}{k!}=e^{\lambda s}e^{-\lambda} = e^{-\lambda(1-s)}\]
+\item $X \sim binomial(n,p)$ \[E(s^x) = \sum_{k=0}^n {n \choose k} p^k (1-p)^{n-k} s^k = (ps + 1 - p)^n\]
+\item $X \sim geometric(p)$ \[E(s^x) = \sum_{n=0}^\infty p(1-p)^k s^k = \frac{p}{1 - (1-p)s}\]
+\end{itemize}
+Some useful power series to know are
+ \[\sum_{n=k}^\infty z^n = \frac{z^k}{1-z}\quad \mbox{if $|z| < 1$}\]
+ \[\sum_{n=0}^m {m \choose n} b^{m-n}z^n = (z+b)^m\]
+ \[\sum_{n=0}^\infty \frac{1}{n!} z^n = e^z\]
+ \[\sum_{n=1}^\infty \frac{(-1)^{n-1}}{n}z^n = log(1+z) \quad \mbox{if $z > -1$}\]
+An example solving a gf (rational polynomial, partial fractions)
+\[A(s) = \frac{1 + s + 2s^2}{2-3s+s^2} = \frac{1 + s + 2s^2}{(2-s)(1-s)} = \frac{a + bs}{2-s} + \frac{c+ds}{1-s}\]
+
 
 \bibliographystyle{Science}
 
