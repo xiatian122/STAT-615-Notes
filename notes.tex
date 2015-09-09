@@ -69,6 +69,10 @@
 \usepackage{bbm}
 \usepackage{amsmath}
 
+\usepackage{graphicx}
+
+
+\graphicspath{{./figures/}}
 
 \theoremstyle{definition}
 \newtheorem{mydef}{Definition.}[section]
@@ -76,6 +80,9 @@
 
 \theoremstyle{plain}
 \newtheorem{mythm}{Theorem}[section]
+\newtheorem{mylemma}{Lemma}[section]
+\newtheorem*{myproof}{Proof}
+
 
 
 \setcounter{section}{-1}
@@ -416,14 +423,86 @@ Stochastic processes have many applications: \\
 e.g. signal process, random networks, queues, climate, earthquakes, insect populations, stock market, economics, epidemics, and so on. \\ \\
 \textbf{Note}: I generally use upper case for random variables and lower case for actual values.\\ \\
 Just as we do for a random variable \& a  random vector, we want to discuss the \underline{distribution} of a stochastic process. But, with infinitely many rv's, we cannot simply express it as an ordinary function (such as a cdf). Instead we have 
-
+\begin{mythm}
+The \underline{distribution} of a real-valued stochastic process $\{X_t\}$ (that is, how we can calculate probabilities \& expectations for it) is uniquely determined by its \underline{finite-dimensional distributions} \[F_{t_1, \cdots, t_n}(x_1, \cdots, x_n) = P(X_{t_1} \leq x_1, \cdots, X_{t_n} \leq x_n)\]
+\end{mythm}
+$\mbox{}$\\
+The idea is that any probability about the process \underline{as a whole} can be computed in terms of limits involving finite-dim dist's (or prob's of finitely many rv's). \\
+A corollary of this theorem is that, in principle, it is always possible to construct a process from its distribution in terms of functions of independent r.v's.
+\begin{itemize}
+\item ex. \[P(\sup_{n \geq 0} X_n \leq x) = \lim_{n \rightarrow \infty}P(\bigcap_{k=1}^n\{X_k \leq x\}) = \lim_{n \rightarrow \infty}F_{1, \cdots, n}(x, \cdots, x)\].
+\item \[P(\mbox{the limit until $X_t$ first exceeds $x$ is finite}) = \sum_{n=0}^\infty P(\max_{k < n} X_k \leq x < X_n)\] (Respectively: limit of sums w/ finitely many terms, probability for finitely many r.v's)
+\end{itemize}
+$\mbox{}$\\
+(Note: the concept applies to all stochastic processes, whether real-valued or not)\\ \\
+\underline{key point} The individual random variables in a stochastic process are \underline{not independent}. Thus the primary problem is to \underline{model} their dependence. This can be done in various ways.
+\begin{itemize}
+\item[-]  by construction fron independent random variables\\
+e.g. $X_t = \sum_{j=0}^\infty \lambda_j \epsilon_{t-j}$, where the $\epsilon_t$'s are iid.
+\item[-] by conditional probabilities\\
+e.g. $P(X_t = j | X_{t-1} = i) = {i \choose j}p^j (1-p)^{i-j}, i \geq j \geq 0$ 
+\item[-] by correlation structure (which may not be sufficient to characterize the process) \\
+e.g. $cov(X_t, X_{t-1})=p^j$
+\end{itemize}
+$\mbox{}$\\
+Each approach offers insight into the process, so it is useful to study all three. Constructive versions of the process are also useful for simulations. Covariances are useful for statistics.
+\begin{myexp}
+\underline{Simple Random Walk} (SRW)
+Let $S_n$ be a location at time $n$, on the integers $\mathbbm{Z}$ and suppose each new location is either up one or down one, at random, form the last location. Specifically,\begin{displaymath}\begin{aligned}&S_0 = 0 \\ &S_{n+1} = \begin{cases}S_n - 1 \quad \mbox{w.p. $1-p$}\\S_n + 1 \quad \mbox{w.p. $p$}\end{cases} \mbox{, $0 < p <1$}\end{aligned} \end{displaymath}
+\end{myexp}
 \bibliography{scibib}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.5]{SRW.eps}
+\caption{Simple Random Walk (SRW)}
+\label{1:SRW}
+\end{figure}
+$\mbox{}$\\
+Note that, no matter what the past history of the process is, the next step depends only on the current location. We can express this by
+\begin{displaymath}
+\begin{aligned}
+P(S_{n+1} = j &| S_1 = i_1, \cdots, S_n = i_n) = \begin{cases} 1- p \quad \mbox{if $j = i_n - 1$}\\ p \quad \mbox{if $j = i_n + 1$}\\ 0 \quad \mbox{o.w.} \end{cases}\\  =& P(S_{n+1} = j | S_n = i_n) 
+\end{aligned}
+\end{displaymath}
+A constructive definition is as follows: let $x_1, x_2, \cdots$ be iid r.v's with \[P(X_n = -1) = 1-p, \quad P(X_n = +1)=p\]. Then define $S_n = X_1 + \cdots + X_n$. $\{S_n\}$ is a simple random walk as defined above. (Here, $S_0 = 0$.)
+\begin{myexp}
+\underline{Simple Branching Process} (SBP) \\
+Suppose at time $0$ one individual (the prognitor) is reproductive. At time $1$, this individual bears a random number $Z_{1,1}$ of descendants then becomes non-reproductive. Let $\{P_k\}_{k=0}^\infty$ be the probability mass function (pmf) for $Z_{1,1}$, i.e. \[P(Z_{1,1} = k) = p_k\]
+\end{myexp}
+At time 2, each newly born individual randomly bears offspring, independently of each other and with the same distribution as $Z_{1,1}$. Then each becomes non-reproductive. The process continues this way, with each new individual starting its own line of descent.
+To represent the process constructively let $Z_{i,j}, \quad i \geq 1, j\geq 1$, ne iid r.v's with pmf $\{p_k\}$, and let \[Z_n = \mbox{total \# of individuals born at time $n$.}\] So
+\begin{displaymath}
+\begin{aligned}
+Z_0 &= 1 \\
+Z_1 &= Z_{1,1} \\
+Z_2 &= Z_{2,1} + Z_{2,2} + \cdots + Z_{2, Z_1} \\
+\vdots \\
+Z_n &= Z_{n,1} + \cdots + Z_{n, Z_{n-1}}
+\end{aligned}
+\end{displaymath}
+Each $Z_n$ is a \underline{random sum} of $Z_{n-1}$ id r.v's. (Define the sum to be $0$ if $Z_{n-1} = 0$.)
+Note that each example relies on sums of independent r.v.' s. This is often the case for stochastic process (or approximately so) and at least makes a good starting point for our course. We review some basics about sums of independent r.v.'s.
+\begin{mydef}
+Let $\{a_n\}_{n=0}^\infty$ and $\{b_n\}_{n=0}^\infty$ be real valued sequences. Their \underline{convolution} is the sequence (double $\{a_n\} * \{b_n\}$) with elements \[\sum_{i=0}^n a_i b_{n-i}  = \sum_{i=0}^n a_{n-i}b_i\].
+\end{mydef}
+Note that $\{a_n\}*\{b_n\} = \{b_n\}*\{a_n\}$.
+
+Also, $\quad (\{a_n\}*\{b_n\})*\{c_n\} = \{a_n\}*(\{b_n\}*\{c_n\})$ (check)
+$\mbox{}$ \\
+Convolutions have an important probabilistic interpretation, given next. Note: we write $X \sim \{a_n\}$ to indicate $X$ has pmf $\{a_n\}$. 
+\begin{mylemma}
+Suppose $X$ and $Y$ are independent r.v.'s such that $X$ has pmf $\{a_n\}$ and $Y$ has pmf $\{b_n\}$. Then $X+Y$ has pmf $\{a_n\}*\{b_n\}$. ($n \geq 0$)
+\end{mylemma}
+\begin{myproof}
+(By asumption both $X$ \& $Y$ are nonnegative and integer valued.) \\
+The event $\{X+Y=n\}$ can be decomposed into disjoint events: \[\{X+Y=n\}=\bigcap_{i=0}^n\{X=i, Y=n-i\}\] So \begin{displaymath} \begin{aligned}P(X+Y=n) &= \sum_{i=0}^n P(X=i)P(Y=n-i) \quad \mbox{using independence}\\ &= \sum_{i=0}^n a_i b_{n-i} \end{aligned} \end{displaymath}. That is, the pmf for $X+Y$ is $\{a_n\} * \{b_n\}$.
+\end{myproof}
+$\mbox{}$\\
+\underline{\textbf{Remark}} If $X$ and $Y$ are independent and integer valued with pmf's $\{a_n\}_{n=-\infty}^\infty$, $\{b_n\}_{n=-\infty}^\infty$, rep. then \[P(X+Y=n) = \sum_{i=-\infty}^\infty a_i b_{n-i} \quad \mbox{(which exists since each sequence is summable)}\] (A probabilistic distribution is \underline{absolutely continuous} if it has a nonnegative density $f(x)$ such that $\int_{-\infty}^\infty f(x) dx = 1$. [There are continuous distributions w/o densities.]) Or if $X$ and $Y$ are independent with absolutely continuous distributions having densities $f_X(x)$ and $f_Y(y)$, rep., then $X+Y$ has density \[f_X * f_Y(Z) = \int_{-\infty}^\infty f_X(x)f_Y(z-x)dx\]. (Note: convolution formulas are context dependent, so beware!) \\
+\underline{example} $\quad$ Suppose $X \sim Poisson(\lambda), Y \sim Poisson(\mu)$. So \[a_n = P(X=n) = \frac{\lambda^n e^{-\lambda}}{n!}, n \geq 0, b_n = P(Y = n) = \frac{\mu_n e^{-\lambda}}{n!}, n \geq 0\] Then, \[P(X+Y=n) = \sum_{i=0}^n a_i b_{n-i} = \cdots = \frac{(\lambda + \mu)^n e^{-(\mu + \lambda)}}{n!}, n \geq 0, \mbox{(check),} \quad \mbox{and $X+Y \sim Poisson(\lambda + \mu).$}\]
+Note: If $X_1, \cdots, X_n$ are iid with pmf $\{p_k\}$ we will denote the pmf of $S_n = X_1 + \cdots + X_n$ by \[\{P_k^{*n}\} = \{p_k\}*\cdots * \{p_k\} \quad \mbox{(n-fold convolution)}\].
 
 \bibliographystyle{Science}
-
-
-
-
 
 \clearpage
 
