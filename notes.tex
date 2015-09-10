@@ -562,9 +562,24 @@ We now recall some of the basic properties of gf's
 \begin{mythm}
 Let $A(s) = \sum_{n=0}^\infty s^n, B(s) = \sum_{n=0}^\infty b_n s^n$, and assume existence
 \begin{enumerate}[(i)]
-\item Suppose
+\item Suppose $\sum_{n=0}^\infty |a_n| s_0^n < \infty$, then for all $s \in (-s_0, s_0)$ [The condition allows us to bring derivative inside the sum.] \[\frac{d}{ds}A(s) = \sum_{n=1}^\infty n a_n s^{n-1}\].
+\item $A(s)$ is infinitely differentiable on $(-s_0, s_0)$.
+\item $\{a_n\}$ is uniquely determined by its gf (This is a crucial point as it says there is a 1-1 correspondence between sequences \& their gf's (assuming existence of the gf). This is why $A(s)$ is called ``generating''): \[a_n = \frac{1}{n!} (\frac{d^n}{ds^n}A(s))_{s=0}\]
+\item If every $a_n \geq 0$, then $A(s)$ is non decreasing for $s \geq 0$ and all derivatives of $A(s)$ are non decreasing for $s \geq 0$.\\
+In particular, A(s) is \underline{convex}: \[\alpha A(x) + (1-\alpha) A(y) \geq A(\alpha x + (1-\alpha)y) \quad (0 \leq \alpha \leq 1)\]
+\item The gf for $\{a_n\}*\{b_n\}$ is $A(s)B(s)$. In review of (iii), $A(s)B(s)$ thus can be used to identify the convolution.  $\quad \square$ 
 \end{enumerate}
 \end{mythm}
+$\mbox{}$\\
+Now we want to look at how these properties are relevant to integer valued r.v.'s.\\
+But first an extension.
+\begin{mydef}
+An \underline{\textbf{extended}} r.v. is a random variable that can possibly take values $+\infty$ or $-\infty$. \\
+In particular, suppose $X$ is nonnegative but extended. \\
+Then its cdf $F(x)=P(X \leq x)$ satisfies $\lim_{x \rightarrow \infty} F(x) = P(X \leq x)$, which could be less than 1. The ``missing'' probability is $P(X = \infty)$.
+\end{mydef}
+
+
 \bibliographystyle{Science}
 
 \clearpage
