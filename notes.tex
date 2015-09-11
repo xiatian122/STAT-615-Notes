@@ -676,9 +676,68 @@ E(s^{S_n}) &= E(S^{X_1 + \cdots + X_n}) \\
 \begin{mythm}
 Suppose $X_1, X_2, \cdots$ is a sequence of r.v.'s and $N$ is a nonnegative integer valued r.v., independent of the sequence. The r.v. $S_N = X_1 + \cdots + X_n$ ($=0$ if $N=0$ by convention) is called a \underline{random sum} of the sequence. $\quad \square$
 \end{mythm}
+$\mbox{}$\\
+We have already seen an example of random sums in our construction of the simple branching process. (Ex.1.3).
+\begin{mythm}
+Suppose $X_1, X_2, \cdots$ are iid with pgf $P(s) = \sum_{k=0}^\infty P_k s^k$ and $N$ has pgf $A(s)=\sum_{n=0}^\infty a_n s^n$, $N$ independent of $\{X_n\}$. Then $S_N = X_1 + \cdots + X_N$ has pgf $A(P(s))$, $  0 \leq s \leq 1$.
+\end{mythm}
+$\mbox{}$\\
+prob. proof. (by and expectation) Assume $0 \leq s \leq 1$.\\
+Recall that the pgf of $S_n$ of $S_n$ is $E(s^{S_n}) = (P(s))^n$. \\
+This even makes sense if $n=0$ (since $S_0 = 0$ by convention).
+Thus $E(s^{S_N}|N) = (P(s))^N$ (note: this is a function of $N$)\\ 
+(\textbf{Important}: Regardless of the type of rv's, we can think of $E(X|Y)$ as the \underline{function of Y} such that \[E(h(Y)X) = E(h(Y)E(X|Y)\], whenever the expectations make sense. )\\ 
+By the law of iterated expectation 
+\begin{displaymath}
+\begin{aligned}
+E(s^{S_N}) &= E(E(s^{S_N}|N)) \\
+		&=E((P(s))^N) = A(P(s)) \\
+\end{aligned}
+\end{displaymath}
+(take limit as $s\uparrow 1$ to get case $s=1$.) \\
+\textbf{Be sure to learn both these methods ($\uparrow \downarrow$)} \\
+prob. proof (by partitioning the sample space)\\
+Using the indicator functions,
+\begin{displaymath}
+\begin{aligned}
+E(s^{S_N}) & = E(\sum_{n=0}^\infty s^{S_n} \mathbbm{1}_{N=n}) \\
+		&= \sum_{n=0}^\infty E(s^{S_n})E(\mathbbm{1}_{N=n}) \quad \mbox{(by independence of $S_n \in N$)}\\
+		&= \sum_{n=\infty}^\infty (P(s))^n a_n \qquad \mbox{(since $E(\mathbbm{1}_{N=n} = P(N=n) = a_n$)} \\
+		&= A(P(s))  \qquad \qquad \qquad\qquad\qquad\qquad\qquad \qquad \qquad \square
+\end{aligned}
+\end{displaymath}
 
-
-
+Refer to Resnick for an analytical proof involving the pmf of $S_N$, given by \[P(S_n = j) = \sum_{n=0}^\infty P_j^{*n} a_n\], where $P_j^{*n} = P(S_n = j)$ (n-fold convolution) and \\
+$\mbox{}\qquad \quad P_j^{*0} = P(S_0 = j) = \begin{cases} 1 \quad \mbox{if $j=0$} \\ 0 \quad \mbox{o.w.}\end{cases}$
+\begin{mycor}
+Assume as in Thm.1.5. If $E(|X_1|) < \infty$ and $P(N < \infty) = 1$ then \[E(S_N) = E(N)E(X_1) \quad \mbox{(this is valid even if $E(N) = \infty$})\]. If also $E(X_1^2) < \infty$ and $E(N^2) < \infty$ then \[Var(S_N) = E(N)Var(X_1) + Var(N)(E(X_1))^2\].
+(Helpful result: variance partition formula $var(X) = E(var(X|Y)) + var(E(X|Y))$.)
+\end{mycor}
+\begin{myproof}
+(exercise - use the pgf from Thm1.11, or compute directly using either of the methods in the proof of Thm.1.5.) $\quad \square$
+\end{myproof}
+$\mbox{}$ \\
+\underline{EX.1..3 (cont.)} Simple Branching Process \\
+Let $Z_{ij}$ be iid with pmf $\{p_k\}$ and pgf $P(s)$. \\
+Recall that $Z_0 = 1, Z_1 = Z_{1,1}, \cdots, Z_n = Z_{n,1} + \cdots + Z_{n, Z_{n-1}}, \cdots$ \\
+Note that $Z_{n-1}$ depends only on $Z_{ij}$'s s.t. $i \leq n-1$ and thus $Z_{n-1}$ is independent of $Z_{n,j}$'s. \\
+Therefore $Z_n$ is a random sum of $Z_{n,j}$'s (w/ $N = Z_{n-1}$) and so its pgf is $P_n(s) = E(s^{Z_n})$ where $P_1(s) = P(s)$ and \begin{displaymath}
+\begin{aligned}
+P_n(s) &= P_{n-1}(P(s)) \\
+&= \cdots = P(P(\cdots P(s) \cdots)). \quad \mbox{(n-fold composition)} 
+\end{aligned}
+\end{displaymath}
+(interpret $P_n(s) = P(P_{n-1}(s))$: think of $z_1$ independent process starting at time 1.) [Many problems can be solved by ``conditioning''. There may be several ways to do this. (In this situation, one cond. on $Z_{n-1}$, the other cond. on $Z_1$)] \\
+\begin{example}
+Let $P(s) = 1-p + ps$ (pgf of $Bernoulli(p)$) \\
+Thus, at each generation the (sole) individual either generates one offspring, w.p. p, or none at all (which stops the process). \\
+$\mbox{}$\\
+Thinking prpbabilistically:  $\quad Z_n = 1  \quad \mbox{iff $n$ independent successes (births) have occurred (w.p $p^n$)}$ \\
+				$\mbox{}\qquad\qquad\qquad\qquad\qquad\qquad$ $Z_n = 0$ o.w.  (w.p. $1-p^n$) \\
+Thinking analytically: We claim $P_n(s) = 1 - p^n + p^ns$ \\
+Proof by induction:    $P_1(s) = P(s) = 1 - p + ps$ \\
+			     $\mbox{} \quad \qquad \qquad \qquad \qquad$	If we claim holds for $P_n$ then
+\end{example}
 
 
 
