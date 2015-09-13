@@ -69,6 +69,7 @@
 \usepackage{bbm}
 \usepackage{amsmath}
 
+
 \usepackage{graphicx}
 
 
@@ -449,7 +450,7 @@ $\mbox{}$\\
 Each approach offers insight into the process, so it is useful to study all three. Constructive versions of the process are also useful for simulations. Covariances are useful for statistics.
 \begin{myexp}
 \underline{Simple Random Walk} (SRW)
-Let $S_n$ be a location at time $n$, on the integers $\mathbbm{Z}$ and suppose each new location is either up one or down one, at random, form the last location. Specifically,\begin{displaymath}\begin{aligned}&S_0 = 0 \\ &S_{n+1} = \begin{cases}S_n - 1 \quad \mbox{w.p. $1-p$}\\S_n + 1 \quad \mbox{w.p. $p$}\end{cases} \mbox{, $0 < p <1$}\end{aligned} \end{displaymath}
+Let $S_n$ be a location at time $n$, on the integers $\mathbbm{Z}$ and suppose each new location is either up one or down one, at random, form the last location. Specifically,\begin{displaymath}\begin{aligned}&S_0 = 0 \\ &S_{n+1} = \begin{cases}S_n - 1 \mbox{ w.p. $1-p$}\\S_n + 1  \mbox{ w.p. $p$}\end{cases} \mbox{, $0 < p <1$}\end{aligned} \end{displaymath}
 \end{myexp}
 \begin{figure}[h]
 \centering
@@ -717,7 +718,7 @@ Assume as in Thm.1.5. If $E(|X_1|) < \infty$ and $P(N < \infty) = 1$ then \[E(S_
 (exercise - use the pgf from Thm1.11, or compute directly using either of the methods in the proof of Thm.1.5.) $\quad \square$
 \end{myproof}
 $\mbox{}$ \\
-\underline{EX.1..3 (cont.)} Simple Branching Process \\
+\underline{EX.1.3 (cont.)} Simple Branching Process \\
 Let $Z_{ij}$ be iid with pmf $\{p_k\}$ and pgf $P(s)$. \\
 Recall that $Z_0 = 1, Z_1 = Z_{1,1}, \cdots, Z_n = Z_{n,1} + \cdots + Z_{n, Z_{n-1}}, \cdots$ \\
 Note that $Z_{n-1}$ depends only on $Z_{ij}$'s s.t. $i \leq n-1$ and thus $Z_{n-1}$ is independent of $Z_{n,j}$'s. \\
@@ -734,15 +735,123 @@ Thus, at each generation the (sole) individual either generates one offspring, w
 $\mbox{}$\\
 Thinking prpbabilistically:  $\quad Z_n = 1  \quad \mbox{iff $n$ independent successes (births) have occurred (w.p $p^n$)}$ \\
 				$\mbox{}\qquad\qquad\qquad\qquad\qquad\qquad$ $Z_n = 0$ o.w.  (w.p. $1-p^n$) \\
-Thinking analytically: We claim $P_n(s) = 1 - p^n + p^ns$ \\
-Proof by induction:    $P_1(s) = P(s) = 1 - p + ps$ \\
-			     $\mbox{} \quad \qquad \qquad \qquad \qquad$	If we claim holds for $P_n$ then
+Thinking analytically: $\quad\qquad$We claim: \begin{displaymath}\begin{aligned}P_n(s) = 1 - p^n + p^ns \end{aligned}\end{displaymath}
+Proof by induction:    $\qquad \qquad P_1(s) = P(s) = 1 - p + ps$ \\
+			     $\mbox{}  \qquad \qquad \qquad \qquad \qquad \qquad$	If we claim holds for $P_n$ then
+			     \begin{displaymath}
+			     \begin{aligned}
+			     P_{n+1}(s) =& P_n(P(s)) \\
+			     		   =& 1 - p^n + p^n(1-p+ps) \\
+			     		   =& 1-p^{n+1} + p^{n+1}s
+			     \end{aligned}
+			     \end{displaymath}
 \end{example}
+$\mbox{}$\\
+Mean of the branching process.
+Let $\mu$ be the mean number of offspring per progeniter. \\
+So \[\mu = E(Z_{i,}) = \sum_{k=0}^\infty kp_k = P'(1)\], and 
+\begin{displaymath}
+\begin{aligned}
+E(Z_n) =& E(Z_{n,1})E(Z_{n-1}) \quad \mbox{(since $Z_n$ is a random sum with $Z_{n-1}$ terms)} \\
+	 = & \cdots = \mu^n
+\end{aligned}
+\end{displaymath}
+. (S if $\mu > 1$ then $E(Z_n) \uparrow$ while if $\mu < 1$ then $E(Z_n) \downarrow$. ) \\
+An important question is whether $Z_n$ ever becomes $0$ (which is certainly possible if $p_0 > 0$). Since $Z_n = 0$ implies $Z_{n+1} = 0, Z_{n+2}=0, \cdots$, this is called \underline{extinction}.
+\begin{mythm}
+Let $\{Z_n\}$ be a branching process with offspring pmf $\{p_k\}$ \& pgf $p(s)$. Assume $P(1)=1$, let $P_n(s) = P(P_{n-1}(s))$ be the pgf for $Z_n$, $n \geq 1$, and $\pi = P(extinction)$.
+\begin{enumerate}[(i)]
+\item $\pi = \lim_{n \rightarrow \infty} \pi_n$, where $\pi_n = P_n(0) = P(\pi_{n-1})$, $\pi_1 = P(0)$.
+\item If $\mu = E(Z_1) \leq 1$ then $\pi = 1$. \\
+	If $\mu > 1$ then $\pi$ is the (unique) solution to $P(s) = s$ s.t. $0 \leq s < 1$.
+\item If $p_0 = 0$ then $\pi = 0$. (this includes the trivial case $p_1 =1$.)
+\end{enumerate}
+$\mbox{}$ \\
+Comments:
+\begin{enumerate}[(a)]
+\item Conditioning on the \nth{1} generation:
+\begin{displaymath}
+\begin{aligned}
+\pi =&\sum_{n=0}^\infty P(Z_1 = k) P(\mbox{each of the $k$ branches goes extinct}) \\
+=& \sum_{n=0}^\infty p_k \pi^k = P(\pi)
+\end{aligned}
+\end{displaymath}
+\item Part (i) provides a way to solve $\pi = P(\pi)$ numerically, which fortunately converges very fast.
+\end{enumerate}
+\end{mythm}
+\begin{myproof}
+Let $E_n = \{\mbox{extinction by time $n$}\} = \{Z_n = 0\}$. \\
+Recall that $Z_n = 0$ implies $Z_{n+1} = 0$, i.e. $E_n \subset E_{n+1}$, $n \geq 1$. \\
+Hence, \begin{displaymath} \pi_n = P(Z_n =0) = P(E_n) \uparrow \end{displaymath}.
+So, \begin{displaymath} \begin{aligned} \pi =& P(\mbox{extinction at some time $n$}) \\ =& P(\bigcup_{n=1}^\infty E_n) = \lim_{n \rightarrow \infty} P(E_n) = \lim_{n \rightarrow \infty} \pi_n
+\end{aligned} \end{displaymath}
+Since $P_n(s) = P(P_{n-1}(s))$ then $\pi_n = P_n(0) = P(P_{n-1}(0)) = P(\pi_{n-1})$. \\
+Furthermore, $\pi = \lim_{n \rightarrow \infty} P(\pi_{n-1}) = P(\pi)$ since $P$ is cont. This confirms $\pi
+$ solves $P(s) = s$.
 
 
+Now let $s^*$ be any solution to $P(s) = s$. Since $P$ is nondecreasing on $[0,1)$, \[\pi_1 = P(0) \leq P(s^*) = s^*\] and, if $\pi_{n} \leq s^*$ then $\pi_{n+1} = P(\pi_n) \leq P(s^*) = s^*$. \\
+So, by induction $\pi_n \leq s^*$ for all $n$. Since $\pi_n \uparrow \pi$, it must be that $\pi$ is the minimal solution. 
 
 
+Next, note \[P''(s) = \sum_{k=0}^\infty k(k-1)p_k s^{k-2} \geq 0 \quad \mbox{for all $s \geq 0$.}\]
+So $P$ is convex on $[0, \infty)$. \\
+This leads to two possibilities, keeping in mind $P(1) = 1, P(0) \geq 0$.
+\begin{enumerate}
+\item $\mu = P'(1)$.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.8]{CONVEX1.eps}
+\label{1:convex1}
+\end{figure}
+$P$ must intersect the graph $y=s$ twice in $[0,1]$, the smaller solution being $\pi$.
+\item $\mu = P'(1) \leq 1$,
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.8]{CONVEX2.eps}
+\label{1:convex2}
+\end{figure}
+$P$ intersects the graph $y=s$ only once in $[0,1]$ (at $s=1$). \\
+$s=1$ is either the only solution or there is a second solution greater than $1$. (If $p_0 = 0$ then $p_1 = 1$ and $\pi = 0$.) $\quad \square$
+\end{enumerate}
+\end{myproof}
+\begin{example}
+Suppose $\{Z_n\}$ is a simple branching process with $geometric(p)$ offspring distribution, i.e. $p_k = p(1-p)^k, k \geq 0$. Then \[\mu = \frac{1-p}{p}\] and if $p \geq 1/2$ then $\pi = 1$ and extinction is certain. \\
+If $p < 1/2$, we solve \[\pi = P(\pi) = \frac{P}{1 - (1-p)\pi} \] to obtain \[\pi = \frac{1 \pm \sqrt{1 - 4p(1-p)}}{2(1-p)}= \frac{1 \pm |1 -2p|}{2(1-p)} = 1 \quad \mbox{or} \quad \frac{p}{1-p}\]. The minimal solution is $\pi = \frac{p}{1-p}$. 
+\end{example}
+A very important use of geometric functions is to prove the convergence of distributions. We give the result for pgf's of nonnegative ineger valued r.v.'s, but it has many analogues in terms of mgf's, characteristic functions, Fourier \& Laplace transforms, etc.
+\begin{mydef}
+Let $X, X_1, X_2, \cdots$ be nonnegative \underline{integer} valued r.v.'s (but possibly $P(X_n < \infty) < 1$). We say \underline{$X_n$ converges in distribution to $X$} ($X_n \implies X$) if \[P(X_n = k) \rightarrow P(X = K), \mbox{ as } n \rightarrow \infty, \mbox{ for all } k \geq 0. \quad \square \]
+\end{mydef}
+\begin{mythm}
+(Continuity Thm) Let $X_1, X_2, \cdots$ be nonnegative r.v.'s with pgf's $P_1, P_2, \cdots$, resp. There exists a r.v. $X$ s.t. $X_n \implies X$ if and only if there exists $P(s)$ s.t. \[P_n(s) \rightarrow P(s), \mbox{ as } n \rightarrow \infty, \mbox{ for all } s \in (0,1) \quad \mbox{(not necessarily for $s =1$)}\] In this case, $P$ is the pgf of $X$.
+\end{mythm}
+(\underline{\underline{Note:}} this theorem assumes only convergence of the distribution (probabilities). The sequence $X_n$ of rv's need not converge, or even be defined on the same probability space.)
+\begin{myproof}
+(sketched - see book for details)
 
+
+Assume $X_n \rightarrow X$ and let $P_{n,k} = P(X_n = k), P_k = P(X=k)$. 
+$P_n(s)= \sum_{k=0}^\infty P_{n,k}s^k$ is pgf of $X_n$, $P(s)  = \sum_{k = 0}^\infty p_k s^k$ is pgf of $X$.
+\[
+	P_n(s) - P(s) = \underbrace{\sum_{k = 0}^m (p_{n,k} - p_k)s^k}_{\substack{\rightarrow 0\mbox{ } for\mbox{ } any\\ choice\mbox{ } of\mbox{ } m}} + \underbrace{\sum_{k = m+1}^\infty (p_{n,k} - p_k)s^k}_{\substack{smaller\mbox{ } in\mbox{ } abs.value \mbox{ } than \\ \sum_{n = m+1}^\infty s^k = \frac{s^{m+1}}{1-s} \\ which\mbox{ }we\mbox{ }can\mbox{ }make\mbox{ }arb.\mbox{ } small\\by\mbox{ }choosing\mbox{ }m\mbox{ }large,\mbox{ }if\mbox{ }s < 1}}
+\] So $P_n(s) \rightarrow P(s)$ for all $s \in [0,1)$. 
+
+
+Now assume $P_n(s) \rightarrow P(s)$ fro all $s \in (0,1)$. \\
+So $|P_m(s) - P_n(s)| \rightarrow 0$ as $n \rightarrow \infty, m \rightarrow \infty$ (Cauchy Criterion)\\
+Thus, 
+\begin{displaymath}
+\begin{aligned}
+P_m(0) - P_n(0) &= p_{m,0} - p_{n,0} \\
+			&= \lim_{s \downarrow 0}(\underbrace{(P_m(s) - P_n(s))}_{\rightarrow 0}-\underbrace{\sum_{k=1}^\infty (p_{m,k} - p_{n,k})s^k}_{\substack{\leq \frac{s}{1-s} \mbox{ } which \mbox{ }can \mbox{ }be \\ arbitrarily \mbox{ } small,\\ by \mbox{ } choice \mbox{ }of\mbox{ } s}})
+\end{aligned}
+\end{displaymath}
+Hence, $P_m(0) - P_n(0) \rightarrow 0$, which implies $P_n(0)  = p_{n,0} \rightarrow p_0$ for some $p_0$. \\
+Since $\frac{P_n(s) = p_{n,0}}{s} = \sum_{k = 0}^\infty p_{n, k+1}s^k$ is a pgf and $\frac{P_n(s) -p_{n,0}}{s} \rightarrow \frac{P(s) - p_0}{s}, 0 < s < 1$. \\
+The argument can be repeated to conclude \[p_{n,1} = (\frac{P_n(s) - p_{n,0}}{s})|_{s=0} \rightarrow p_1 \mbox{ $p_1$ for some $p_1$,}\] and so on. By induction, $p_{n,k} \rightarrow p_k$ for some $p_k$, all $k$. \\
+By the \nth{1} part of the proof, $P_n(s) \rightarrow \sum_{k = 0}^\infty p_k s^k$ and since also $P_n(s) \rightarrow P(s)$, it follows that $\{p_k\}$ is the pmf for $P(s)$. $\quad \square$
+\end{myproof}
 
 
 
