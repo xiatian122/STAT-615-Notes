@@ -849,10 +849,27 @@ P_m(0) - P_n(0) &= p_{m,0} - p_{n,0} \\
 \end{displaymath}
 Hence, $P_m(0) - P_n(0) \rightarrow 0$, which implies $P_n(0)  = p_{n,0} \rightarrow p_0$ for some $p_0$. \\
 Since $\frac{P_n(s) = p_{n,0}}{s} = \sum_{k = 0}^\infty p_{n, k+1}s^k$ is a pgf and $\frac{P_n(s) -p_{n,0}}{s} \rightarrow \frac{P(s) - p_0}{s}, 0 < s < 1$. \\
-The argument can be repeated to conclude \[p_{n,1} = (\frac{P_n(s) - p_{n,0}}{s})|_{s=0} \rightarrow p_1 \mbox{ $p_1$ for some $p_1$,}\] and so on. By induction, $p_{n,k} \rightarrow p_k$ for some $p_k$, all $k$. \\
+The argument can be repeated to conclude \[p_{n,1} = (\frac{P_n(s) - p_{n,0}}{s})|
+_{s=0} \rightarrow p_1 \mbox{ $p_1$ for some $p_1$,}\] and so on. By induction, $p_{n,k} \rightarrow p_k$ for some $p_k$, all $k$. \\
 By the \nth{1} part of the proof, $P_n(s) \rightarrow \sum_{k = 0}^\infty p_k s^k$ and since also $P_n(s) \rightarrow P(s)$, it follows that $\{p_k\}$ is the pmf for $P(s)$. $\quad \square$
 \end{myproof}
+$\mbox{}$\\
+\underline{\textbf{Remark}} Note that convergence is assured for $s < 1$ only. That is, $P_n(1) = P(X_n < \infty)$ does not necessarily converges to $P(1) = P(X < \infty)$. 
 
+
+example  $X_n = n$ then $P_{n,n} = 1, P_{n,k} = 0$ for $k \not = n, P_n(s) = s^n$.
+
+
+So $P_n(s) \rightarrow P(s) \equiv 0, 0 < s <1$.
+
+
+but $P(X_n < \infty) = 1 \not \rightarrow P(1) = 0$. \\
+(We can interpret $P(s) \equiv 0$ as a p.g.f. for a r.v. $X$ s.t. $P(X = \infty) = 1$.)
+
+\underline{Example 1.3 (cont.)} Simple Branching Process $\{Z_n\}$. \\
+We have seen $P_n(0) \rightarrow \pi = P(extinction)$.\\
+In fact, $P_n(s) \rightarrow \pi$ for all $s \in (0,1)$ and therefore $Z_n \rightarrow Z$ for some r.v. $Z$ where $P(Z = 0) = \pi, P(Z = \infty) = 1-\pi$.\\
+To prove this, first assume $0 \leq s \leq \pi$. \begin{displaymath}\begin{aligned}\pi_n &= P_n(0) \leq P_n(s) \leq &P_n(\pi)\\ &\downarrow  &|| \\ &\pi &\pi \mbox{ } (since \mbox{ } P(\pi) = \pi \mbox{ } and P_n(\pi) = P_{n-1}(P(\pi)), \mbox{ } etc.)\pi\end{aligned}\end{displaymath}
 
 
 
